@@ -1,0 +1,29 @@
+# ── Core (always needed) ────────────────────────────────────────────────────
+PyMuPDF>=1.24.0          # read PDFs, render pages
+Pillow>=10.0.0           # image handling
+customtkinter>=5.2.0     # GUI
+rapidfuzz>=3.6.0         # Quran correction layer (fuzzy matching)
+
+# ── "english" engine: Marker/Surya (layout-aware) ───────────────────────────
+marker-pdf>=1.2.0
+
+# ── "arabic" + "fast" engines: local Arabic OCR model ───────────────────────
+# Free, offline, no API key. The model downloads on first use into the
+# HuggingFace cache (NOT into this folder), then works with no internet.
+#   katib (default) 0.8B — runs as fp16, fits a 4 GB GPU, fast
+#   qari            2B   — needs 4-bit; slow on Windows (no Triton kernels)
+transformers>=4.49.0
+accelerate>=0.26.0
+peft>=0.11.0
+bitsandbytes>=0.43.0     # only needed for the 2B 'qari' model
+
+# ── "windows" engine: Windows OCR (tiny, optional) ──────────────────────────
+winocr>=0.0.15 ; sys_platform == "win32"
+
+# ── PyTorch ─────────────────────────────────────────────────────────────────
+# Do NOT install torch from here. run.bat installs the correct CUDA build first:
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+# then: pip install -r requirements.txt
+#
+# Removed on purpose: google-genai / openai (paid ceilings) and easyocr
+# (worst measured Arabic accuracy for a large install).
